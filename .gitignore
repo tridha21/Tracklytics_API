@@ -1,0 +1,16 @@
+target/
+*.log
+*.class
+*.jar
+*.war
+
+# IDE files
+.idea/
+.vscode/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# env files
+.env
