@@ -1,14 +1,18 @@
 package com.example.demo.LogIn;
 import com.example.demo.LogIn.*;
+import com.example.demo.dto.UserResponse;
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class AuthService {
 
+
     private final UserRepository userRepository;
+
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     public AuthService(UserRepository userRepository) {
@@ -22,7 +26,7 @@ public class AuthService {
         return userRepository.save(user);
     }
 
-    public User login(LoginRequest request) {
+    public UserResponse login(LoginRequest request) {
 
         User user = userRepository.findByUserEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -31,7 +35,11 @@ public class AuthService {
             throw new RuntimeException("Invalid password");
         }
 
-        return user;
+        return new UserResponse(
+                user.getUserId(),
+                user.getUserEmail(),
+                user.getUserRole().name()
+        );
     }
 }
 

@@ -4,6 +4,9 @@ import com.example.demo.repository.GroupRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Service
 public class GroupService {
@@ -20,6 +23,12 @@ public class GroupService {
 
     public List<Group> getAll() {
         return groupRepository.findAll();
+    }
+    public Optional<Group> findByGroupCode(String code) {
+        return groupRepository.findByGroupCode(code);
+    }
+    public void delete(long id) {
+        groupRepository.deleteById(id);
     }
 }
 

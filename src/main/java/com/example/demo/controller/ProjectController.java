@@ -5,6 +5,10 @@ import com.example.demo.entity.Project;
 import com.example.demo.entity.User;
 import com.example.demo.enums.ProjectStatus;
 import com.example.demo.service.ProjectService;
+import org.springframework.web.multipart.MultipartFile;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.springframework.web.bind.annotation.*;
 
@@ -82,6 +86,38 @@ public class ProjectController {
         Project project = getProjectById(projectId);
 
         project.setStatus(ProjectStatus.REJECTED);
+
+        return projectService.save(project);
+    }
+
+    @PostMapping("/upload")
+    public Project uploadProject(
+            @RequestParam("studentId") Long studentId,
+            @RequestParam("title") String title,
+            @RequestParam("file") MultipartFile file
+    ) throws Exception {
+
+        Project project = new Project();
+
+        // Save file to uploads folder
+        String uploadDir = "uploads/";
+        String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+
+        Path filePath = Paths.get(uploadDir + fileName);
+        Files.createDirectories(filePath.getParent());
+        Files.write(filePath, file.getBytes());
+
+        // Set project fields
+        project.setTitle(title);
+        project.setFileUpload(fileName);
+        project.setFileLink("http://localhost:7000/uploads/" + fileName);
+        project.setUploadAt(LocalDateTime.now());
+        project.setStatus(ProjectStatus.PENDING);
+
+        // Set student (IMPORTANT)
+        User student = new User();
+        student.setUserId(studentId);
+        project.setStudent(student);
 
         return projectService.save(project);
     }

@@ -1,6 +1,7 @@
 package com.example.demo.LogIn;
 
 import com.example.demo.LogIn.LoginRequest;
+import com.example.demo.dto.UserResponse;
 import com.example.demo.entity.User;
 import com.example.demo.LogIn.AuthService;
 
@@ -23,8 +24,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public User login(@RequestBody LoginRequest request) {
-
+    public UserResponse login(@RequestBody LoginRequest request) {
         return service.login(request);
     }
 }

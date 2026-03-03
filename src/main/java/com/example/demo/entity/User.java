@@ -16,6 +16,8 @@ public class User {
     @Column(unique = true)
     private String userEmail;
 
+    private String password;
+
     public String getPassword() {
         return password;
     }
@@ -23,8 +25,6 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    private String password;
 
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
